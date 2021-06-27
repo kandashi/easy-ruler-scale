@@ -6,3 +6,5 @@
 ### Easy Ruler Scale
 
 Automatically resize the ruler measurement tooltips to your canvas DPI and zoom level. 
+
+![Demo image](Demo.png)
