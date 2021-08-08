@@ -1,9 +1,19 @@
+import { scaledDrawDistanceLabel } from "./libruler.js";
+
 const ERS = "easy-ruler-scale"
 Hooks.once('init', async function () {
+  if(game.modules.get('libruler')?.active) {
+    Hooks.once('libRulerReady', async function() {
+      libWrapper.register(ERS, "window.libRuler.RulerSegment.prototype.drawDistanceLabel", scaledDrawDistanceLabel, "WRAPPED");
+    }
+  } else {
     libWrapper.register(ERS, "Ruler.prototype.measure", newMeasure, "OVERRIDE")
+  }
 
-    game.setting.register()
+  game.setting.register()
 });
+
+
 
 
 function newMeasure(destination, {gridSpaces=true}={}) {
