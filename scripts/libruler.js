@@ -8,7 +8,6 @@ export function scaledDrawDistanceLabel(wrapped) {
     let gs = canvas.scene.dimensions.size /100
     let zs = 1/canvas.stage.scale.x
     label.transform.scale.set(gs+zs)
-    console.log(`easy-ruler-scale|scaled to ${gs+zs}`);
   }
   
   return label;
