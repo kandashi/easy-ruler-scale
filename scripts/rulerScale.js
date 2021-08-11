@@ -1,5 +1,15 @@
 import { scaledDrawDistanceLabel } from "./libruler.js";
 
+Hooks.on("init", () => {
+  game.settings.register("easy-ruler-scale", "scaling", {
+    name: "Ruler Scale",
+    scope: "client",
+    config: true,
+    default: 100,
+    type: Number,
+});
+})
+
 const ERS = "easy-ruler-scale"
 Hooks.once('init', async function () {
   if(game.modules.get('libruler')?.active) {
@@ -67,7 +77,8 @@ function newMeasure(destination, {gridSpaces=true}={}) {
             let labelPosition = ray.project((ray.distance + 50) / ray.distance);
             label.position.set(labelPosition.x, labelPosition.y);
             //generate scale modifiers from canvas size (assuming default of 100 pixel) and canvas zoom level
-            let gs = canvas.scene.dimensions.size /100
+            let scale = game.settings.get("easy-ruler-scale", "scaling")
+            let gs = (canvas.scene.dimensions.size /100) * (scale/100)
             let zs = 1/canvas.stage.scale.x
             label.transform.scale.set(gs+zs)
         }
