@@ -53,7 +53,7 @@ function newMeasure(destination, {gridSpaces=true}={}) {
         let s = segments[i];
         s.last = i === (segments.length - 1);
         s.distance = d;
-        s.text = this._getSegmentLabel(d, totalDistance, s.last);
+        s.text = this._getSegmentLabel(s, totalDistance, s.last);
     }
 
     // Clear the grid highlight layer
@@ -63,7 +63,7 @@ function newMeasure(destination, {gridSpaces=true}={}) {
     // Draw measured path
     r.clear();
     for (let s of segments) {
-        const { ray, label, text, last } = s;
+        const { ray, label, distance, text, last } = s;
 
         // Draw line segment
         r.lineStyle(6, 0x000000, 0.5).moveTo(ray.A.x, ray.A.y).lineTo(ray.B.x, ray.B.y)
@@ -82,9 +82,9 @@ function newMeasure(destination, {gridSpaces=true}={}) {
             let zs = 1/canvas.stage.scale.x
             label.transform.scale.set((gs+zs) * (scale/100))
         }
-
+        
         // Highlight grid positions
-        this._highlightMeasurement(ray);
+        this._highlightMeasurementSegment(s);
     }
 
     // Draw endpoints
