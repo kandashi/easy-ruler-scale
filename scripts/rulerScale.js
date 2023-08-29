@@ -16,7 +16,7 @@ Hooks.once('init', async function () {
 function _newDrawMeasuredPath() {
     const r = this.ruler.beginFill(this.color, 0.25);
     for ( const segment of this.segments ) {
-      const {ray, distance, label, text, last} = segment;
+      const {ray, distance, label, last} = segment;
       if ( distance === 0 ) continue;
 
       // Draw Line
@@ -29,17 +29,20 @@ function _newDrawMeasuredPath() {
 
       // Draw Label
       if ( label ) {
-        label.text = text;
-        label.alpha = last ? 1.0 : 0.5;
-        label.visible = true;
-        let labelPosition = ray.project((ray.distance + 50) / ray.distance);
-        label.position.set(labelPosition.x, labelPosition.y);
-        //generate scale modifiers from canvas size (assuming default of 100 pixel) and canvas zoom level
-        let scale = game.settings.get("easy-ruler-scale", "scaling")
-        let gs = (canvas.scene.dimensions.size /100) 
-        let zs = 1/canvas.stage.scale.x
-        label.transform.scale.set((gs+zs) * (scale/100))
+        const text = this._getSegmentLabel(segment, this.totalDistance);
+        if ( text ) {
+          label.text = text;
+          label.alpha = last ? 1.0 : 0.5;
+          label.visible = true;
+          let labelPosition = ray.project((ray.distance + 50) / ray.distance);
+          label.position.set(labelPosition.x, labelPosition.y);
+          let scale = game.settings.get("easy-ruler-scale", "scaling")
+          let gs = (canvas.scene.dimensions.size /100) 
+          let zs = 1/canvas.stage.scale.x
+          label.transform.scale.set((gs+zs) * (scale/100))
+        }
+        else label.visible = false;
       }
     }
     r.endFill();
-}
+  }
